@@ -2,7 +2,7 @@ require('dotenv').config();
 const axios = require('axios');
 const fs = require('fs');
 const chalk = require('chalk').default;
-const { initKafkaProducer, sendLogToKafka } = require('./sendToKafka');
+const { initKafkaProducer, sendLogsToKafkaBatch } = require('./sendToKafka');
 const { bulkIndexLogs } = require('./sendToOpenSearch');
 
 const {
@@ -51,9 +51,7 @@ async function fetchLogs(streamName, streamId) {
             const topicName = streamName.replace(/\s+/g, '-');
 
             // Send logs to Kafka (optionally, you could also batch this)
-            for (const log of logs) {
-                await sendLogToKafka(topicName, log.message || log);
-            }
+            await sendLogsToKafkaBatch(topicName, logs);
 
             // Send logs in bulk to OpenSearch
             await bulkIndexLogs(streamName, logs);
