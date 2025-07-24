@@ -3,7 +3,7 @@ const axios = require('axios');
 const fs = require('fs');
 const chalk = require('chalk').default;
 const { initKafkaProducer, sendLogToKafka } = require('./sendToKafka');
-const { indexLog } = require('./sendToOpenSearch');
+const { bulkIndexLogs } = require('./sendToOpenSearch');
 
 const {
     GRAYLOG_USER,
@@ -47,16 +47,18 @@ async function fetchLogs(streamName, streamId) {
             console.log(chalk.cyanBright(`📥 [${streamName}] Logs fetched: ${logs.length}`));
         }
 
-        for (const entry of logs) {
-            const topicName = streamName.replace(/\s+/g, '-'); // e.g., Authentication Logs → Authentication-Logs
-            const logContent = entry.message || entry;
+        if (logs.length > 0) {
+            const topicName = streamName.replace(/\s+/g, '-');
 
-            // ✅ Send to Kafka
-            await sendLogToKafka(topicName, logContent);
+            // Send logs to Kafka (optionally, you could also batch this)
+            for (const log of logs) {
+                await sendLogToKafka(topicName, log.message || log);
+            }
 
-            // ✅ Index to OpenSearch
-            await indexLog(streamName, entry);
+            // Send logs in bulk to OpenSearch
+            await bulkIndexLogs(streamName, logs);
         }
+
 
         // Update fetch checkpoint
         lastFetchTimes[streamName] = currentToTime;
