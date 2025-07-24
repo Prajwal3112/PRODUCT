@@ -1,0 +1,12 @@
+{
+  "Authentication Logs": "6878c1cc9f1a0a7653d4e883",
+  "Cloud": "6878e9059f1a0a7653d5c85e",
+  "FIM": "6878d62c9f1a0a7653d55fba",
+  "Firewall": "6878c3b69f1a0a7653d50228",
+  "Malware Detection": "6878da9c9f1a0a7653d57c4c",
+  "Network Logs": "6878ebb49f1a0a7653d5e13e",
+  "Routers": "s6878c7119f1a0a7653d51f46",
+  "Syslog Logs": "6878f2619f1a0a7653d6045c",
+  "Vulnerability": "6878dbaf9f1a0a7653d58283",
+  "Windows Event Logs": "6878e98a9f1a0a7653d5cc69"
+}
