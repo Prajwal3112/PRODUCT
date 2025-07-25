@@ -11,14 +11,22 @@ Directory/
 │   ├── node_modules/
 │   ├── .env
 │   ├── vite.config.js
+│   ├── eslinet.config.js
 │   ├── package.json
+│   └── public/
 │   └── src/
+│       ├── assets/
 │       ├── App.jsx
 │       └── main.jsx
 │
 ├── Scripts/
 │   ├── .env
 │   ├── checkKafka.js
-│   └── checkOpenSearch.js
+│   ├── checkOpenSearch.js
+│   ├── fetchGraylogLogs.js
+│   ├── pollGraylogLogs.js
+│   ├── sendToKafka.js
+│   ├── sendToOpenSearch.js
+│   └── streams.json
 │
 └── README.md

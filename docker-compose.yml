@@ -20,8 +20,14 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
       KAFKA_LOG_RETENTION_HOURS: 168
       KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
-      # CRITICAL: Adding the required CLUSTER_ID
       CLUSTER_ID: "MkU3OEVBNTcwNTJENDM2Qk"
+
+      # 🔧 Allow large messages (10 MB limit, change if needed)
+      KAFKA_MESSAGE_MAX_BYTES: 10485760
+      KAFKA_REPLICA_FETCH_MAX_BYTES: 10485760
+      KAFKA_FETCH_MESSAGE_MAX_BYTES: 10485760
+      KAFKA_MAX_REQUEST_SIZE: 10485760
+
     volumes:
       - kafka-data:/var/lib/kafka/data
     restart: unless-stopped
@@ -39,10 +45,10 @@ services:
       - "9600:9600"
     environment:
       discovery.type: single-node
-      plugins.security.disabled: "true"  # Disabled for easier access
+      plugins.security.disabled: "true"
       bootstrap.memory_lock: "true"
       OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
-      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "Cfrt56561234"  # Required even when security is disabled
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "Cfrt56561234"
     ulimits:
       memlock:
         soft: -1
@@ -62,14 +68,12 @@ services:
     ports:
       - "5601:5601"
     environment:
-      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'  # Changed to http since security is disabled
-      # Remove username/password since security is disabled
+      OPENSEARCH_HOSTS: '["http://opensearch:9200"]'
       DISABLE_SECURITY_DASHBOARDS_PLUGIN: "true"
     depends_on:
       opensearch:
         condition: service_healthy
     restart: unless-stopped
-    # Removed the problematic entrypoint - using default
 
   redpanda-console:
     image: docker.redpanda.com/redpandadata/console:latest
@@ -83,16 +87,15 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  # Fixed filebeat configuration
   filebeat:
     image: docker.elastic.co/beats/filebeat:8.13.0
     container_name: filebeat
-    user: root  # Run as root to avoid permission issues
+    user: root
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./logs:/var/log/filebeat  # Changed path and created local logs directory
-      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro  # Custom config file
+      - ./logs:/var/log/filebeat
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
     environment:
       - ELASTICSEARCH_HOSTS=http://opensearch:9200
     depends_on:
