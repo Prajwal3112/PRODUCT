@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-07-29T13:02:05.127130",
+  "total_logs_analyzed": 20000,
+  "total_anomalies_detected": 1857,
+  "anomaly_percentage": 9.285,
+  "model_scores": {
+    "isolation_forest": 1997,
+    "one_class_svm": 2259,
+    "gaussian_mixture": 2000,
+    "is": 1857
+  }
+}
