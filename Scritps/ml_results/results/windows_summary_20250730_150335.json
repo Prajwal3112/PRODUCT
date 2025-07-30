@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-07-30T15:03:35.743872",
+  "total_logs_analyzed": 1105,
+  "total_anomalies_detected": 59,
+  "anomaly_percentage": 5.339366515837104,
+  "model_scores": {
+    "isolation_forest": 56,
+    "one_class_svm": 80,
+    "gaussian_mixture": 56,
+    "is": 59
+  },
+  "use_case_breakdown": {
+    "Anomalous Logon Time": 0,
+    "Lateral Movement Attempts": 10,
+    "Privilege Escalation": 6,
+    "Unusual Process Creation": 0,
+    "GeoIP RDP Anomaly": 0,
+    "Unusual Logon Times": 0,
+    "Unusual Host Logons": 17,
+    "Pass-the-Hash Attacks": 2,
+    "Impossible Travel": 0,
+    "Brute Force Attacks": 0
+  }
+}
