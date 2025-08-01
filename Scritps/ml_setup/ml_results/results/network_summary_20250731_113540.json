@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-07-31T11:35:40.117513",
+  "total_logs_analyzed": 20000,
+  "total_anomalies_detected": 1443,
+  "anomaly_percentage": 7.215000000000001,
+  "model_scores": {
+    "is_protocol": 0,
+    "isolation_forest": 1586,
+    "one_class_svm": 1617,
+    "gaussian_mixture": 1594,
+    "hdbscan": 691,
+    "is": 1443
+  },
+  "use_case_breakdown": {
+    "Beaconing Detection": 0,
+    "Suspicious User Agents": 0,
+    "Unusual Destinations": 1443,
+    "Data Exfiltration": 0,
+    "Port Scanning": 0,
+    "Lateral Movement": 0,
+    "Suspicious Protocols": 0,
+    "Command Injection": 0
+  }
+}
