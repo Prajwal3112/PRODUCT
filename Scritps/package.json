@@ -13,7 +13,7 @@
     "@opensearch-project/opensearch": "^3.5.1",
     "axios": "^1.10.0",
     "chalk": "^5.4.1",
-    "dotenv": "^17.2.0",
+    "dotenv": "^17.2.1",
     "kafkajs": "^2.2.4"
   }
 }

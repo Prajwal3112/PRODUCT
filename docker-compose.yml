@@ -47,12 +47,22 @@ services:
       discovery.type: single-node
       plugins.security.disabled: "true"
       bootstrap.memory_lock: "true"
-      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+      # 🔧 Updated: Use 8GB for your 16GB RAM system (50% allocation)
+      OPENSEARCH_JAVA_OPTS: "-Xms512M -Xmx512M"
       OPENSEARCH_INITIAL_ADMIN_PASSWORD: "Cfrt56561234"
+      
+      # 🔧 Performance optimizations
+      thread_pool.write.queue_size: 1000
+      thread_pool.search.queue_size: 1000
+      indices.memory.index_buffer_size: "30%"
+      
     ulimits:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     volumes:
       - opensearch-data:/usr/share/opensearch/data
     restart: unless-stopped
@@ -61,6 +71,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:3.1.0

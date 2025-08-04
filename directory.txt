@@ -11,22 +11,50 @@ Directory/
 │   ├── node_modules/
 │   ├── .env
 │   ├── vite.config.js
-│   ├── eslinet.config.js
+│   ├── eslint.config.js
 │   ├── package.json
 │   └── public/
 │   └── src/
 │       ├── assets/
 │       ├── App.jsx
+│       ├── pages
+│       ├── components
 │       └── main.jsx
 │
 ├── Scripts/
 │   ├── .env
+│   ├── ml_results/
+│       ├── data/
+│       ├── logs/
+│       ├── models/
+│       ├── results/
+│       ├── threat_reports/
+│       ├── visualizations/
+│   ├── ml_setup/
+│       ├── analyzeAnomalies.py
+│       ├── analyzeWindowsAnomalies.py
+│       ├── bombalAutoencoderDetector.py
+│       ├── deepDiveAnalyzer.py
+│       ├── deepDiveNetworkAnalyzer.py
+│       ├── deepDiveWindowsAnalyzer.py
+│       ├── fetchFirewallData.py
+│       ├── fetchNetworkData.py
+│       ├── fetchWindowsData.py
+│       ├── investigateAnomalies.py
+│       ├── mlFirewallDetector.py
+│       ├── mlNetworkDetector.py
+│       ├── mlWindowsDetector.py
+│   ├── applyISMToExisting.js
+│   ├── checkISMStatus.js
 │   ├── checkKafka.js
-│   ├── checkOpenSearch.js
+│   ├── checkOpensarch.js
+│   ├── createISMPolicy.js
 │   ├── fetchGraylogLogs.js
+│   ├── optimizeQueries.js
 │   ├── pollGraylogLogs.js
 │   ├── sendToKafka.js
 │   ├── sendToOpenSearch.js
-│   └── streams.json
+│   ├── streams.json
+│   └── triggerCompression.js
 │
 └── README.md

@@ -4,9 +4,6 @@ const chalk = require('chalk').default;
 
 const osClient = new Client({ node: process.env.OPENSEARCH_HOST });
 
-/**
- * Converts a stream name like "Authentication Logs" to index format with date suffix
- */
 const getIndexName = (streamName) => {
   const today = new Date();
   const dd = String(today.getDate()).padStart(2, '0');
@@ -15,20 +12,52 @@ const getIndexName = (streamName) => {
   return `logs-${streamName.toLowerCase().replace(/\s+/g, '-')}-${dd}-${mm}-${yyyy}`;
 };
 
-/**
- * Bulk indexes a list of logs for a given stream
- */
+// 🔧 Index template with compression settings
+const indexTemplate = {
+  index_patterns: ["logs-*"],
+  template: {
+    settings: {
+      number_of_shards: 1,
+      number_of_replicas: 0,
+      "index.codec": "best_compression", // 🔥 Enable compression
+      "index.refresh_interval": "30s",
+      "index.translog.flush_threshold_size": "1gb",
+      "index.merge.scheduler.max_thread_count": 1
+    },
+    mappings: {
+      properties: {
+        "@timestamp": { type: "date" },
+        message: { type: "text", analyzer: "standard" },
+        stream: { type: "keyword" },
+        indexed_at: { type: "date" }
+      }
+    }
+  },
+  priority: 500
+};
+
+// 🔧 Ensure index template exists
+async function ensureIndexTemplate() {
+  try {
+    await osClient.indices.putIndexTemplate({
+      name: 'logs-template',
+      body: indexTemplate
+    });
+    console.log(chalk.blue('📋 Index template updated'));
+  } catch (error) {
+    console.error(chalk.red('❌ Failed to create index template:'), error.message);
+  }
+}
+
 async function bulkIndexLogs(streamName, logEntries = []) {
   if (!Array.isArray(logEntries) || logEntries.length === 0) return;
 
-  const streamIndex = getIndexName(streamName);
+  await ensureIndexTemplate(); // 🔧 Ensure template exists
 
-  // Prepare bulk request body
+  const streamIndex = getIndexName(streamName);
   const body = logEntries.flatMap((entry) => {
     const log = entry.message || entry;
     const timestamp = log['@timestamp'] || new Date().toISOString();
-
-    // Avoid OpenSearch metadata conflicts
     delete log._id;
 
     return [
@@ -43,7 +72,12 @@ async function bulkIndexLogs(streamName, logEntries = []) {
   });
 
   try {
-    const response = await osClient.bulk({ body });
+    const response = await osClient.bulk({ 
+      body,
+      timeout: '30s',
+      refresh: false // 🔧 Don't refresh immediately
+    });
+    
     if (response.errors) {
       console.error(chalk.red(`❌ Bulk indexing had some errors for [${streamIndex}]`));
     } else {
