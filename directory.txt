@@ -16,9 +16,13 @@ Directory/
 │   └── public/
 │   └── src/
 │       ├── assets/
+│       ├── components/
+|           ├── Footer.jsx
+|           ├── Header.jsx
+|           ├── Sidebar.jsx
+│       ├── pages/
+|           ├── Dashboard.jsx
 │       ├── App.jsx
-│       ├── pages
-│       ├── components
 │       └── main.jsx
 │
 ├── Scripts/
