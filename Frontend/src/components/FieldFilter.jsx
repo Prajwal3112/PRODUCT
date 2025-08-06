@@ -48,14 +48,7 @@ const FieldFilter = ({ fieldName, fieldValue, onAddFilter, disabled = false }) =
       position: 'relative',
       group: 'field-filter'
     }}>
-      <span style={{ 
-        color: '#fff', 
-        wordBreak: 'break-word',
-        flex: 1
-      }}>
-        {typeof fieldValue === 'object' ? JSON.stringify(fieldValue) : String(fieldValue)}
-      </span>
-      
+      {/* Filter button moved to the left */}
       {isClickable && (
         <button
           onClick={handleAddFilter}
@@ -73,7 +66,8 @@ const FieldFilter = ({ fieldName, fieldValue, onAddFilter, disabled = false }) =
             opacity: 0.7,
             transition: 'all 0.2s',
             minWidth: '24px',
-            height: '24px'
+            height: '24px',
+            flexShrink: 0  // Prevent button from shrinking
           }}
           onMouseOver={(e) => {
             e.target.style.opacity = '1';
@@ -89,6 +83,15 @@ const FieldFilter = ({ fieldName, fieldValue, onAddFilter, disabled = false }) =
           <Plus size={12} />
         </button>
       )}
+      
+      {/* Field value now comes after the button */}
+      <span style={{ 
+        color: '#fff', 
+        wordBreak: 'break-word',
+        flex: 1
+      }}>
+        {typeof fieldValue === 'object' ? JSON.stringify(fieldValue) : String(fieldValue)}
+      </span>
     </div>
   );
 };
